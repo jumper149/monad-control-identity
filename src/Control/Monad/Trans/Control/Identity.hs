@@ -31,8 +31,8 @@ import Control.Monad.Trans.Reader
 
   'MonadTransControl' instances are aware of the monadic state of the
   transformer and allow to save and restore this state.
-  'MonadTransControl' instances exist for exactly those transformers,
-  that don't have any monadic state.
+  'MonadTransControlIdentity' instances on the other hand exist only for
+  exactly those transformers, that don't have any monadic state.
 
   So for any instance of this class this should hold:
 

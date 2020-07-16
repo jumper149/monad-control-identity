@@ -1,18 +1,46 @@
 {-# LANGUAGE FlexibleInstances, FunctionalDependencies, TypeFamilies, Rank2Types, UndecidableInstances #-}
 
-module Control.Monad.Trans.Control.Identity ( MonadTransControlIdentity (..)
-                                            , defaultLiftWithIdentity
-                                            , MonadBaseControlIdentity (..)
-                                            , defaultLiftBaseWithIdentity
-                                            , MonadTransFunctor (..)
-                                            , hoistTrans
-                                            ) where
+module Control.Monad.Trans.Control.Identity (
+
+  -- * MonadTransControlIdentity
+    MonadTransControlIdentity (..)
+  , RunIdentity
+  -- * Defaults
+  , defaultLiftWithIdentity
+  , RunIdentityDefault
+
+  -- * MonadBaseControlIdentity
+  , MonadBaseControlIdentity (..)
+  , RunIdentityInBase
+  -- * Defaults
+  , defaultLiftBaseWithIdentity
+  , RunIdentityInBaseDefault
+
+  -- * MonadTransFunctor
+  , MonadTransFunctor (..)
+  , hoistTrans
+) where
 
 import Control.Monad.Base
 import Control.Monad.Trans.Control
 import Control.Monad.Trans.Identity
 import Control.Monad.Trans.Reader
 
+{- | The 'MonadTransControlIdentity' type class is a stronger version of
+  'MonadTransControl':
+
+  'MonadTransControl' instances are aware of the monadic state of the
+  transformer and allow to save and restore this state.
+  'MonadTransControl' instances exist for exactly those transformers,
+  that don't have any monadic state.
+
+  So for any instance of this class this should hold:
+
+  @forall a. 'StT' t a ~ a@
+
+  This can't be given as a constraint to the class due to limitations
+  regarding the @TypeFamilies@ extension.
+-}
 class MonadTransControl t => MonadTransControlIdentity t where
   liftWithIdentity :: Monad m => ((RunIdentity t) -> m b) -> t m b
 

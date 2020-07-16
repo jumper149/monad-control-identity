@@ -7,6 +7,8 @@ module Control.Monad.Trans.Control.Identity (
   , defaultLiftWithIdentity
 
   -- * MonadBaseControlIdentity
+  -- | Regarding the 'IO' base monad this can be seen as an alternative
+  -- way to implement 'MonadUnliftIO'.
   , MonadBaseControlIdentity (..)
   , defaultLiftBaseWithIdentity
 
@@ -49,7 +51,14 @@ instance MonadTransControlIdentity IdentityT where
 instance MonadTransControlIdentity (ReaderT r) where
   liftWithIdentity = defaultLiftWithIdentity
 
--- | Instances of this class are the same as instances of 'MonadUnliftIO', but for any base monad.
+{- | The 'MonadBaseControlIdentity' type class is a stronger version of
+  'MonadBaseControl'.
+
+  Just like 'MonadTransControlIdentity' instances of
+  'MonadBaseControlIdentity' hold no monadic state:
+
+  @forall a. 'StM' m a ~ a@
+-}
 class MonadBaseControl b m => MonadBaseControlIdentity b m | m -> b where
   liftBaseWithIdentity :: ((forall x. m x -> b x) -> b a) -> m a
 

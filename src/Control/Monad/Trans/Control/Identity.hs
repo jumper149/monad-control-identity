@@ -4,17 +4,11 @@ module Control.Monad.Trans.Control.Identity (
 
   -- * MonadTransControlIdentity
     MonadTransControlIdentity (..)
-  , RunIdentity
-  -- * Defaults
   , defaultLiftWithIdentity
-  , RunIdentityDefault
 
   -- * MonadBaseControlIdentity
   , MonadBaseControlIdentity (..)
-  , RunIdentityInBase
-  -- * Defaults
   , defaultLiftBaseWithIdentity
-  , RunIdentityInBaseDefault
 
   -- * MonadTransFunctor
   , MonadTransFunctor (..)
@@ -42,15 +36,11 @@ import Control.Monad.Trans.Reader
   regarding the @TypeFamilies@ extension.
 -}
 class MonadTransControl t => MonadTransControlIdentity t where
-  liftWithIdentity :: Monad m => ((RunIdentity t) -> m b) -> t m b
-
-type RunIdentity t = forall n b. Monad n => t n b -> n b
-
-type RunIdentityDefault t = forall n b. (Monad n, StT t b ~ b) => t n b -> n b
+  liftWithIdentity :: Monad m => ((forall x. t m x -> m x) -> m a) -> t m a
 
 defaultLiftWithIdentity :: (Monad m, MonadTransControl t)
-                        => ((RunIdentityDefault t) -> m b)
-                        -> t m b
+                        => ((forall x. StT t x ~ x => t m x -> m x) -> m a)
+                        -> t m a
 defaultLiftWithIdentity = liftWith
 
 instance MonadTransControlIdentity IdentityT where
@@ -61,14 +51,10 @@ instance MonadTransControlIdentity (ReaderT r) where
 
 -- | Instances of this class are the same as instances of 'MonadUnliftIO', but for any base monad.
 class MonadBaseControl b m => MonadBaseControlIdentity b m | m -> b where
-  liftBaseWithIdentity :: ((RunIdentityInBase m b) -> b a) -> m a
-
-type RunIdentityInBase m b = forall a. m a -> b a
-
-type RunIdentityInBaseDefault t m b = forall a. Monad m => t m a -> b a
+  liftBaseWithIdentity :: ((forall x. m x -> b x) -> b a) -> m a
 
 defaultLiftBaseWithIdentity :: (MonadBaseControlIdentity b m, MonadTransControlIdentity t)
-                            => ((RunIdentityInBaseDefault t m b) -> b a)
+                            => ((forall x. t m x -> b x) -> b a)
                             -> t m a
 defaultLiftBaseWithIdentity inner = liftWithIdentity $ \ runId ->
   liftBaseWithIdentity $ \ runIdInBase ->

@@ -4,12 +4,34 @@ module Control.Monad.Trans.Control.Identity (
 
   -- * MonadTransControlIdentity
     MonadTransControlIdentity (..)
+  {- | 'MonadTransControlIdentity' instances can easily be created for
+    monad transformers, because of the superclass 'MonadTransControl':
+
+@
+newtype ExampleT = ...
+  deriving ('Monad', 'MonadTrans')
+
+instance 'MonadTransControl' ExampleT where
+  ...
+
+instance 'MonadTransControlIdentity' ExampleT where
+  'liftWithIdentity' = 'defaultLiftWithIdentity'
+@
+  -}
   , defaultLiftWithIdentity
 
   -- * MonadBaseControlIdentity
   -- | Regarding the 'IO' base monad this can be seen as an alternative
   -- way to implement 'MonadUnliftIO'.
   , MonadBaseControlIdentity (..)
+  {- | Just like 'MonadTransControlIdentity', 'MonadBaseControl' instances
+     can easily be created for monad transformers:
+
+@
+instance 'MonadTransControlIdentity' ExampleT where
+  'liftBaseWithIdentity' = 'defaultLiftBaseWithIdentity'
+@
+  -}
   , defaultLiftBaseWithIdentity
 
   -- * MonadTransFunctor

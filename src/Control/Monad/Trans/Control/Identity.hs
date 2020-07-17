@@ -33,10 +33,6 @@ instance 'MonadTransControlIdentity' ExampleT where
 @
   -}
   , defaultLiftBaseWithIdentity
-
-  -- * MonadTransFunctor
-  , MonadTransFunctor (..)
-  , hoistTrans
 ) where
 
 import Control.Monad.Base
@@ -99,18 +95,3 @@ instance MonadBaseControlIdentity b m => MonadBaseControlIdentity b (IdentityT m
 
 instance MonadBaseControlIdentity b m => MonadBaseControlIdentity b (ReaderT r m) where
   liftBaseWithIdentity = defaultLiftBaseWithIdentity
-
-class MonadTransControlIdentity t => MonadTransFunctor t where -- TODO: does the superclass here really make sense
-  liftMap :: (m a -> n b) -> t m a -> t n b
-
-instance MonadTransFunctor IdentityT where
-  liftMap f = IdentityT . f . runIdentityT
-
-instance MonadTransFunctor (ReaderT r) where
-  liftMap f m = ReaderT $ f . runReaderT m
-
-hoistTrans :: (MonadBaseControl b m, MonadBaseControl b (t m), MonadTransFunctor t)
-           => t b a
-           -> t m a
-hoistTrans a = (=<<) restoreM $ liftBaseWith $ \ runInBase ->
-                 runInBase $ liftMap liftBase $ a

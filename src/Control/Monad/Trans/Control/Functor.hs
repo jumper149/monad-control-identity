@@ -1,6 +1,6 @@
 module Control.Monad.Trans.Control.Functor (
-    MonadTransFunctor (..)
-  , hoistTrans
+  MonadTransFunctor (..)
+, hoistTrans
 ) where
 
 import Control.Monad.Base

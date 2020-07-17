@@ -1,5 +1,5 @@
 name:                monad-control-identity
-version:             0.1.0.0
+version:             0.1.0.1
 synopsis:            Stronger classes than monad-control
 -- description:
 license:             BSD3

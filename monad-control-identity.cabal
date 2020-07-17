@@ -1,11 +1,12 @@
 name:                monad-control-identity
-version:             0.1.0.1
+version:             0.1.0.2
 synopsis:            Stronger classes than monad-control
 description:         This package defines the type class MonadBaseControlIdentity, which is very
                      similar to MonadBaseControl from monad-control.
                      The difference is, that MonadBaseControlIdentity instances are only valid,
                      when there is no monadic state.
-                     This results in simpler functions to lift values in contravariant positions.
+                     This results in simpler type signatures to lift values in contravariant
+                     positions.
 license:             BSD3
 license-file:        LICENSE
 author:              Felix Springer

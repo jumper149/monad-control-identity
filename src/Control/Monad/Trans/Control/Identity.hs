@@ -24,11 +24,11 @@ instance 'MonadTransControlIdentity' ExampleT where
 -- | Regarding the 'IO' base monad this can be seen as an alternative
 -- way to implement 'MonadUnliftIO'.
 , MonadBaseControlIdentity (..)
-{- | Just like 'MonadTransControlIdentity', 'MonadBaseControl' instances
-   can easily be created for monad transformers:
+{- | Just like 'MonadTransControlIdentity', 'MonadBaseControlIdentity'
+  instances can easily be created for monad transformers:
 
 @
-instance 'MonadTransControlIdentity' ExampleT where
+instance 'MonadBaseControlIdentity' b m => 'MonadBaseControlIdentity' b (ExampleT m) where
   'liftBaseWithIdentity' = 'defaultLiftBaseWithIdentity'
 @
   -}

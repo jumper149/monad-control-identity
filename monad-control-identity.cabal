@@ -1,5 +1,5 @@
 name:                monad-control-identity
-version:             0.1.0.2
+version:             0.1.0.3
 synopsis:            Stronger classes than monad-control
 description:         This package defines the type class MonadBaseControlIdentity, which is very
                      similar to MonadBaseControl from monad-control.

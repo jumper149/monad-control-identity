@@ -1,5 +1,10 @@
 # Revision history for monad-control-identity
 
+## 0.1.0.3 -- 2020-07-28
+
+* Accept older versions of transformers.
+* Fix documentation.
+
 ## 0.1.0.2 -- 2020-07-17
 
 * Improve documentation.

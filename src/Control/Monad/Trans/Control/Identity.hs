@@ -9,7 +9,7 @@ module Control.Monad.Trans.Control.Identity (
 
 @
 newtype ExampleT = ...
-  deriving ('Monad', 'MonadTrans')
+  deriving ('Monad', 'Control.Monad.Trans.Class.MonadTrans')
 
 instance 'MonadTransControl' ExampleT where
   ...
@@ -21,8 +21,8 @@ instance 'MonadTransControlIdentity' ExampleT where
 , defaultLiftWithIdentity
 
 -- * MonadBaseControlIdentity
--- | Regarding the 'IO' base monad this can be seen as an alternative
--- way to implement 'MonadUnliftIO'.
+-- | Regarding the 'IO' base monad this can be seen as an alternative,
+-- but equivalent, way to implement 'MonadUnliftIO'.
 , MonadBaseControlIdentity (..)
 {- | Just like 'MonadTransControlIdentity', 'MonadBaseControlIdentity'
   instances can easily be created for monad transformers:

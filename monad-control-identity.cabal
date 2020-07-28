@@ -1,13 +1,11 @@
 name:                monad-control-identity
 version:             0.1.0.3
 synopsis:            Stronger classes than monad-control
-description:         This package defines the type class
-                     'Control.Monad.Trans.Control.Identity.MonadBaseControlIdentity', which is very
-                     similar to 'Control.Monad.Trans.Control.MonadBaseControl' from
+description:         This package defines the type class 'MonadBaseControlIdentity', which is very
+                     similar to 'MonadBaseControl' from
                      <https://hackage.haskell.org/package/monad-control monad-control>.
-                     The difference is, that
-                     'Control.Monad.Trans.Control.Identity.MonadBaseControlIdentity' instances are
-                     only valid, when there is no monadic state.
+                     The difference is, that 'MonadBaseControlIdentity' instances are only valid,
+                     when there is no monadic state.
                      This results in simpler type signatures to lift values in contravariant
                      positions.
 license:             BSD3

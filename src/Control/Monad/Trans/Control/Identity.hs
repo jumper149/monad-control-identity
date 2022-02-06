@@ -36,9 +36,13 @@ instance 'MonadBaseControlIdentity' b m => 'MonadBaseControlIdentity' b (Example
 
 ) where
 
+import Control.Monad.ST.Lazy as L
+import Control.Monad.ST.Strict as S
+import Control.Monad.STM
 import Control.Monad.Trans.Control
 import Control.Monad.Trans.Identity
 import Control.Monad.Trans.Reader
+import Data.Functor.Identity
 
 {- | The 'MonadTransControlIdentity' type class is a stronger version of
   'MonadTransControl':
@@ -87,7 +91,31 @@ defaultLiftBaseWithIdentity inner = liftWithIdentity $ \ runId ->
   liftBaseWithIdentity $ \ runIdInBase ->
     inner $ runIdInBase . runId
 
-instance MonadBaseControl b b => MonadBaseControlIdentity b b where
+instance MonadBaseControlIdentity IO IO where
+  liftBaseWithIdentity inner = inner id
+
+instance MonadBaseControlIdentity Maybe Maybe where
+  liftBaseWithIdentity inner = inner id
+
+instance MonadBaseControlIdentity (Either e) (Either e) where
+  liftBaseWithIdentity inner = inner id
+
+instance MonadBaseControlIdentity [] [] where
+  liftBaseWithIdentity inner = inner id
+
+instance MonadBaseControlIdentity ((->) r) ((->) r) where
+  liftBaseWithIdentity inner = inner id
+
+instance MonadBaseControlIdentity Identity Identity where
+  liftBaseWithIdentity inner = inner id
+
+instance MonadBaseControlIdentity STM STM where
+  liftBaseWithIdentity inner = inner id
+
+instance MonadBaseControlIdentity (S.ST s) (S.ST s) where
+  liftBaseWithIdentity inner = inner id
+
+instance MonadBaseControlIdentity (L.ST s) (L.ST s) where
   liftBaseWithIdentity inner = inner id
 
 instance MonadBaseControlIdentity b m => MonadBaseControlIdentity b (IdentityT m) where

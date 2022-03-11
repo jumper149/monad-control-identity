@@ -1,4 +1,4 @@
-{-# LANGUAGE FlexibleInstances, FunctionalDependencies, TypeFamilies, Rank2Types, UndecidableInstances #-}
+{-# LANGUAGE DerivingVia, FlexibleInstances, FunctionalDependencies, GeneralizedNewtypeDeriving, StandaloneDeriving, TypeFamilies, Rank2Types, UndecidableInstances #-}
 
 module Control.Monad.Trans.Control.Identity (
 
@@ -36,6 +36,7 @@ instance 'MonadBaseControlIdentity' b m => 'MonadBaseControlIdentity' b (Example
 
 ) where
 
+import Control.Monad.Base
 import Control.Monad.ST.Lazy as L
 import Control.Monad.ST.Strict as S
 import Control.Monad.STM
@@ -91,35 +92,32 @@ defaultLiftBaseWithIdentity inner = liftWithIdentity $ \ runId ->
   liftBaseWithIdentity $ \ runIdInBase ->
     inner $ runIdInBase . runId
 
-instance MonadBaseControlIdentity IO IO where
-  liftBaseWithIdentity inner = inner id
-
-instance MonadBaseControlIdentity Maybe Maybe where
-  liftBaseWithIdentity inner = inner id
-
-instance MonadBaseControlIdentity (Either e) (Either e) where
-  liftBaseWithIdentity inner = inner id
-
-instance MonadBaseControlIdentity [] [] where
-  liftBaseWithIdentity inner = inner id
-
-instance MonadBaseControlIdentity ((->) r) ((->) r) where
-  liftBaseWithIdentity inner = inner id
-
-instance MonadBaseControlIdentity Identity Identity where
-  liftBaseWithIdentity inner = inner id
-
-instance MonadBaseControlIdentity STM STM where
-  liftBaseWithIdentity inner = inner id
-
-instance MonadBaseControlIdentity (S.ST s) (S.ST s) where
-  liftBaseWithIdentity inner = inner id
-
-instance MonadBaseControlIdentity (L.ST s) (L.ST s) where
-  liftBaseWithIdentity inner = inner id
-
 instance MonadBaseControlIdentity b m => MonadBaseControlIdentity b (IdentityT m) where
   liftBaseWithIdentity = defaultLiftBaseWithIdentity
 
 instance MonadBaseControlIdentity b m => MonadBaseControlIdentity b (ReaderT r m) where
   liftBaseWithIdentity = defaultLiftBaseWithIdentity
+
+deriving via Base IO instance MonadBaseControlIdentity IO IO
+deriving via Base Maybe instance MonadBaseControlIdentity Maybe Maybe
+deriving via Base (Either e) instance MonadBaseControlIdentity (Either e) (Either e)
+deriving via Base [] instance MonadBaseControlIdentity [] []
+deriving via Base ((->) r) instance MonadBaseControlIdentity ((->) r) ((->) r)
+deriving via Base Identity instance MonadBaseControlIdentity Identity Identity
+deriving via Base STM instance MonadBaseControlIdentity STM STM
+deriving via Base (S.ST s) instance MonadBaseControlIdentity (S.ST s) (S.ST s)
+deriving via Base (L.ST s) instance MonadBaseControlIdentity (L.ST s) (L.ST s)
+
+newtype Base m a = MkBase { getBase :: m a }
+  deriving newtype (Functor, Applicative, Monad)
+
+instance Monad m => MonadBase m (Base m) where
+  liftBase = MkBase
+
+instance Monad m => MonadBaseControl m (Base m) where
+  type StM (Base m) a = a
+  liftBaseWith inner = MkBase $ inner getBase
+  restoreM = return
+
+instance Monad m => MonadBaseControlIdentity m (Base m) where
+  liftBaseWithIdentity inner = MkBase $ inner getBase

@@ -22,7 +22,7 @@ cabal-version:       >=1.10
 library
   exposed-modules:     Control.Monad.Trans.Control.Functor
                        Control.Monad.Trans.Control.Identity
-  build-depends:       base
+  build-depends:       base < 5
                      , monad-control
                      , transformers
                      , transformers-base

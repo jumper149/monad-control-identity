@@ -15,17 +15,16 @@ instance 'MonadTransControl' ExampleT where
   ...
 
 instance 'MonadTransControlIdentity' ExampleT where
-  'liftWithIdentity' = 'defaultLiftWithIdentity'
+  'liftWithIdentity' f = 'liftWith' $ \ runT -> f runT
 @
 -}
-, defaultLiftWithIdentity
 
 -- * MonadBaseControlIdentity
 -- | Regarding the 'IO' base monad this can be seen as an alternative,
 -- but equivalent, way to implement 'MonadUnliftIO'.
 , MonadBaseControlIdentity (..)
-{- | Just like 'MonadTransControlIdentity', 'MonadBaseControlIdentity'
-  instances can easily be created for monad transformers:
+{- | 'MonadBaseControlIdentity' instances can be created just as
+  easily for monad transformers:
 
 @
 instance 'MonadBaseControlIdentity' b m => 'MonadBaseControlIdentity' b (ExampleT m) where
@@ -63,16 +62,11 @@ import Data.Functor.Identity
 class MonadTransControl t => MonadTransControlIdentity t where
   liftWithIdentity :: Monad m => ((forall x. t m x -> m x) -> m a) -> t m a
 
-defaultLiftWithIdentity :: (Monad m, MonadTransControl t)
-                        => ((forall x. StT t x ~ x => t m x -> m x) -> m a)
-                        -> t m a
-defaultLiftWithIdentity = liftWith
-
 instance MonadTransControlIdentity IdentityT where
-  liftWithIdentity = defaultLiftWithIdentity
+  liftWithIdentity f = liftWith $ \ runT -> f runT
 
 instance MonadTransControlIdentity (ReaderT r) where
-  liftWithIdentity = defaultLiftWithIdentity
+  liftWithIdentity f = liftWith $ \ runT -> f runT
 
 {- | The 'MonadBaseControlIdentity' type class is a stronger version of
   'MonadBaseControl'.

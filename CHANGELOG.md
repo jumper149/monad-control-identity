@@ -1,5 +1,10 @@
 # Revision history for monad-control-identity
 
+## 0.1.1.0 -- 2022-03-31
+
+* Remove version boundaries for all dependencies.
+* Use DerivingVia internally to generate base instances for `MonadBaseControlIdentity`.
+
 ## 0.1.0.3 -- 2020-07-28
 
 * Accept older versions of transformers.

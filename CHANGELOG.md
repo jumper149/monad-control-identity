@@ -1,5 +1,10 @@
 # Revision history for monad-control-identity
 
+## 0.2.0.0 -- 2022-03-31
+
+* Remove `defaultLiftWithIdentity`.
+* Support GHC 9.0.2.
+
 ## 0.1.1.1 -- 2022-03-31
 
 * Add base version boundary.

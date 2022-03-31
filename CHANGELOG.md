@@ -1,5 +1,9 @@
 # Revision history for monad-control-identity
 
+## 0.1.1.1 -- 2022-03-31
+
+* Add base version boundary.
+
 ## 0.1.1.0 -- 2022-03-31
 
 * Remove version boundaries for all dependencies.

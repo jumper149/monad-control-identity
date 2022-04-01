@@ -15,7 +15,7 @@ instance 'MonadTransControl' ExampleT where
   ...
 
 instance 'MonadTransControlIdentity' ExampleT where
-  'liftWithIdentity' f = 'liftWith' $ \ runT -> f runT
+  'liftWithIdentity' f = 'liftWith' $ \\ runT -> f runT
 @
 -}
 

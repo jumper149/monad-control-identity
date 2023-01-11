@@ -10,7 +10,7 @@ description:
   when there is no monadic state.
   This results in simpler type signatures to lift values in contravariant
   positions.
-license: BSD3
+license: BSD-3-Clause
 license-file: LICENSE
 author: Felix Springer
 maintainer: felixspringer149@gmail.com

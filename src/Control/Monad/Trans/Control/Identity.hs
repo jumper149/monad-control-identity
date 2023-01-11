@@ -38,11 +38,11 @@ instance 'MonadBaseControlIdentity' b m => 'MonadBaseControlIdentity' b (Example
 import Control.Monad.Base
 import Control.Monad.ST.Lazy as L
 import Control.Monad.ST.Strict as S
-import Control.Monad.STM
 import Control.Monad.Trans.Control
 import Control.Monad.Trans.Identity
 import Control.Monad.Trans.Reader
 import Data.Functor.Identity
+import GHC.Conc
 
 {- | The 'MonadTransControlIdentity' type class is a stronger version of
   'MonadTransControl':

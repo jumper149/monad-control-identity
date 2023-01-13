@@ -21,7 +21,8 @@ build-type: Simple
 extra-source-files: CHANGELOG.md
 
 library
-  exposed-modules:     Control.Monad.Trans.Control.Functor
+  exposed-modules:     Control.Monad.Base.Identity
+                       Control.Monad.Trans.Control.Functor
                        Control.Monad.Trans.Control.Identity
   build-depends:       base < 5
                      , monad-control
